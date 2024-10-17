@@ -10,42 +10,27 @@ import korlibs.math.geom.*
 import korlibs.math.interpolation.*
 import korlibs.time.*
 import kotlinx.coroutines.*
+import kotlin.time.*
 
 class GameWindow : Scene() {
     override suspend fun SContainer.sceneMain() {
-        val minDegrees = (-16).degrees
-        val maxDegrees = (+16).degrees
+        val game = Game(views,this)
+        game.sprites.initialize() // Has to be called from here since suspended
 
-        // Load the image
-        val image = image(resourcesVfs["s-l300.jpg"].readBitmap()) {
-            rotation = maxDegrees
-            anchor(.5, .5)
-            scale(1.8)
-            position(256, 256)
-        }
+        //val inputHandler = InputHandler(views)
+        // Main game loop
+        // 1 Process Input
+        // 2 Update game state
+        // 3 Render
 
-        // Coroutine-based tweening for smooth animation
-        launch {
-            while (true) {
-                // Tween to the minimum angle
-                image.tween(image::rotation[minDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-                // Tween to the maximum angle
-                image.tween(image::rotation[maxDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-            }
-        }
-
-        val game = Game(views)
-
-        // Input handling and game logic
-        addUpdater { timeSpan: TimeSpan ->
+        addUpdater { timeSpan: Duration ->
             val dt = timeSpan.seconds
 
-            // inputHandler.process() // Make sure inputHandler is defined and processes input
-            game.update(dt)          // Update your game state (replace with actual game logic)
+            //inputHandler.processInput()
 
-            // You can check for specific inputs here:
+            game.update(dt)
+
             if (views.input.keys.justPressed(Key.SPACE)) {
-                // Handle spacebar press, for example
                 println("Spacebar was pressed!")
             }
         }

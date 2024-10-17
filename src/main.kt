@@ -6,7 +6,7 @@ import korlibs.math.geom.*
 
 import chessBoy.*
 
-suspend fun main() = Korge(windowSize = Size(512, 512), backgroundColor = Colors["#2b2b2b"]) {
+suspend fun main() = Korge(windowSize = Size(config.GameConstants.SCREEN_WIDTH, config.GameConstants.SCREEN_HEIGHT), backgroundColor = Colors["#2b2b2b"]) {
 	val sceneContainer = sceneContainer()
 
 	sceneContainer.changeTo { GameWindow() }
